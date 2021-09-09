@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AppService } from './app.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'ipLocatorClient';
+    title = 'ipLocatorClient';
+
+    constructor(private appService: AppService) {}
+
+    onSubmit() {
+      this.appService.retrieveGeolocation()
+    }
 }

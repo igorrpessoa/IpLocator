@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class IpRequestDto {
+public class LocatorRequestDto {
     private String localIp;
-    private String informedIp;
+    private String requestIp;
 }
