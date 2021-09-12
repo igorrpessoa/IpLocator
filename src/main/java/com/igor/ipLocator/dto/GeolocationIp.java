@@ -12,5 +12,5 @@ public class GeolocationIp {
     private String country;
     private String city;
     private String timezone;
-    private String localDateTime;
+    private String dateTime;
 }

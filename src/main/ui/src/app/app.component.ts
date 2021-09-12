@@ -10,8 +10,4 @@ export class AppComponent {
     title = 'ipLocatorClient';
 
     constructor(private appService: AppService) {}
-
-    onSubmit() {
-      this.appService.retrieveGeolocation()
-    }
 }
