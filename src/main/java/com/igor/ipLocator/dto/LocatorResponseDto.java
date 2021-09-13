@@ -1,14 +1,14 @@
 package com.igor.ipLocator.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Builder
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocatorResponseDto {
 
     public List<GeolocationIp> geolocationIps;

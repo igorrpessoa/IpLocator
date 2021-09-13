@@ -29,17 +29,18 @@ public class IpLocatorService {
 
     public LocatorResponseDto retrieveGeolocationInformation(LocatorRequestDto ipRequestDto) throws GeolocationRequestException {
         List<GeolocationIp> geolocationIps = new ArrayList<>();
+        IPGeolocationAPI api = new IPGeolocationAPI(GEOLOCATION_API_KEY);
+
         logger.debug("Request for IPGeolocationAPI for LocalIP {}", ipRequestDto.getLocalIp());
-        geolocationIps.add(requestGeolocationIp(ipRequestDto.getLocalIp()));
+        geolocationIps.add(requestGeolocationIp(ipRequestDto.getLocalIp(), api));
 
         logger.debug("Request for IPGeolocationAPI for RequestIP {}", ipRequestDto.getRequestIp());
-        geolocationIps.add(requestGeolocationIp(ipRequestDto.getRequestIp()));
+        geolocationIps.add(requestGeolocationIp(ipRequestDto.getRequestIp(), api));
 
         return LocatorResponseDto.builder().geolocationIps(geolocationIps).build();
     }
 
-    private GeolocationIp requestGeolocationIp(String ip) throws GeolocationRequestException{
-        IPGeolocationAPI api = new IPGeolocationAPI(GEOLOCATION_API_KEY);
+    protected GeolocationIp requestGeolocationIp(String ip, IPGeolocationAPI api) throws GeolocationRequestException{
         GeolocationParams geoParams = new GeolocationParams();
         geoParams.setIPAddress(ip);
         geoParams.setFields("geo,time_zone,currency");

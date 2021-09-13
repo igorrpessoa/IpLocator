@@ -1,12 +1,12 @@
 package com.igor.ipLocator.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Builder
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class GeolocationIp {
 
     private String country;
