@@ -59,7 +59,8 @@ export class GeolocationIpComponent implements OnInit {
       },
       (error: any) => {
         this.hasError = true;
-        this.errorMessage = "Could not connect to local api";
+        this.errorMessage = error.error;
+        console.log(error)
       }  
     );
   }
