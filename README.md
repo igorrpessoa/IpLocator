@@ -21,4 +21,4 @@ To run the project you will have to:
 5. Access the application in localhost:4200
 
 
-![alt text](https://raw.githubusercontent.com/igorrpessoa/IpLocator/main/src/main/resources/README.PNG)
+![alt text](https://raw.githubusercontent.com/igorrpessoa/IpLocator/main/src/main/resources/Iplocator.PNG)
