@@ -22,14 +22,20 @@ import java.util.List;
 @Service
 public class IpLocatorService {
 
+    public IpLocatorService(){
+        api = new IPGeolocationAPI(GEOLOCATION_API_KEY);
+        geoParams = new GeolocationParams();
+        geoParams.setFields("geo,time_zone,currency");
+    }
     private ObjectMapper mapper = new ObjectMapper();
     Logger logger = LoggerFactory.getLogger(IpLocatorService.class);
 
     private static final String GEOLOCATION_API_KEY = "847b45eec90c4566978cbaeee2c1252c";
+    private IPGeolocationAPI api;
+    private GeolocationParams geoParams;
 
     public LocatorResponseDto retrieveGeolocationInformation(LocatorRequestDto ipRequestDto) throws GeolocationRequestException {
         List<GeolocationIp> geolocationIps = new ArrayList<>();
-        IPGeolocationAPI api = new IPGeolocationAPI(GEOLOCATION_API_KEY);
 
         logger.debug("Request for IPGeolocationAPI for LocalIP {}", ipRequestDto.getLocalIp());
         geolocationIps.add(requestGeolocationIp(ipRequestDto.getLocalIp(), api));
@@ -41,16 +47,12 @@ public class IpLocatorService {
     }
 
     protected GeolocationIp requestGeolocationIp(String ip, IPGeolocationAPI api) throws GeolocationRequestException{
-        GeolocationParams geoParams = new GeolocationParams();
-        geoParams.setIPAddress(ip);
-        geoParams.setFields("geo,time_zone,currency");
-        try{
+            geoParams.setIPAddress(ip);
             Geolocation geolocation = api.getGeolocation(geoParams);
 
             // Check if geolocation lookup was successful
             if (geolocation.getStatus() == 200) {
-                String json = mapper.writeValueAsString(geolocation);
-                logger.debug("{}", json);
+                logGeolocationPayload(geolocation);
                 return GeolocationIp.builder().
                         country(geolocation.getCountryName())
                         .dateTime(geolocation.getTimezone().getCurrentTime())
@@ -61,9 +63,14 @@ public class IpLocatorService {
                 logger.error("Status Code: %d, Message: %s\n", geolocation.getStatus(), geolocation.getMessage());
                 throw new GeolocationRequestException(geolocation.getMessage());
             }
+    }
+
+    private void logGeolocationPayload(Geolocation geolocation) {
+        try{
+            String json = mapper.writeValueAsString(geolocation);
+            logger.debug("{}", json);
         } catch (JsonProcessingException e){
-            logger.error("Was not possible to parse GeolocationAPI response to JSON");
+            logger.error("It was not possible to parse GeolocationAPI response to JSON");
         }
-        return null;
     }
 }

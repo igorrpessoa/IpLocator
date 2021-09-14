@@ -4,6 +4,7 @@ import com.igor.ipLocator.dto.LocatorRequestDto;
 import com.igor.ipLocator.dto.LocatorResponseDto;
 import com.igor.ipLocator.exception.GeolocationRequestException;
 import com.igor.ipLocator.service.IpLocatorService;
+import lombok.NonNull;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,11 +31,24 @@ public class IpLocatorController {
 
     private IpLocatorService ipLocatorService;
 
+    /*
+    * Retrieve geolocation for ips passed as parameter
+    *
+    * @param localIp - Local Ip from the user
+    * @param requestIp - Ip requested to compare with Local Ip
+    *
+    * @return:
+    *   OK If successful
+    *   BAD REQUEST If input validation error
+    *   INTERNAL SERVER ERROR If geolocationIp API request fails
+    *
+    * @author Igor Pessoa
+    * */
     @GetMapping(value= "/retrieveGeolocation",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<LocatorResponseDto> ipGeolocationRetrieval(
-    @RequestParam @Pattern(regexp = REGEX_IPv4IPv6) String localIp,
-    @RequestParam  @Pattern(regexp = REGEX_IPv4IPv6) String requestIp) throws GeolocationRequestException {
+    @RequestParam @NonNull @Pattern(regexp = REGEX_IPv4IPv6) String localIp,
+    @RequestParam @NonNull @Pattern(regexp = REGEX_IPv4IPv6) String requestIp) throws GeolocationRequestException {
         logger.debug("Received Request for geolocations {} and {}", localIp, requestIp);
         LocatorRequestDto locatorRequestDto = LocatorRequestDto
                 .builder()
